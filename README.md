@@ -1,40 +1,37 @@
-# Laboratorio 5 – Modelo espacial de cobertura de servicios de salud
+# Laboratorio 5 – Modelo espacial de cobertura hospitalaria
 
-**Modelación y Simulación** · Territorio de análisis: **Guatemala**
+**Modelación y Simulación** · Estado de análisis: **Texas (EE.UU.)**
 
 ## Integrantes
 - Humberto Alexander de la Cruz
 - Daniel Oswaldo Juárez Herrera
 
 ## Objetivo
-Construir un modelo espacial con datos geoespaciales públicos para responder una pregunta de política pública: **¿qué fracción de la población de Guatemala tiene acceso a servicios de salud dentro de una distancia razonable, y dónde están las brechas más críticas?**
+Construir un modelo espacial de cobertura hospitalaria para responder una pregunta de política pública: **¿qué fracción de la población de Texas tiene acceso a servicios hospitalarios dentro de una distancia razonable, y dónde están las brechas más críticas?**
 
-Para ello se combinan tres fuentes de datos descargadas desde Python:
+Se usa Texas porque tiene 591 hospitales con datos de camas y 254 condados que mezclan grandes áreas metropolitanas con extensas zonas rurales.
 
-| Dato | Fuente |
+## Datos (provistos en Canvas)
+| Archivo | Contenido |
 |---|---|
-| Divisiones administrativas (22 departamentos, 354 municipios) | [GADM 4.1](https://gadm.org/) |
-| Instalaciones de salud | [Global Healthsites Mapping Project](https://healthsites.io/) (API v3) |
-| Densidad poblacional 2020, 1 km | [WorldPop](https://www.worldpop.org/) |
+| `hospitales_eeuu.geojson` | 7,154 hospitales con camas totales, camas UCI y ocupación |
+| `condados_eeuu.geojson` | 3,221 condados con geometría y código FIPS |
+| `poblacion_condados.csv` | Población estimada por condado |
+| `estados_eeuu.geojson` | Límites de los 51 estados |
 
 ## Alcance de esta entrega
-- **Task 1:** descarga de datos, análisis exploratorio, buffers de cobertura de 5, 10 y 20 km y población cubierta.
-- **Task 2:** sensibilidad de la cobertura (curva de 1 a 50 km), índice compuesto de vulnerabilidad por municipio y ubicación de 5 nuevas instalaciones con un algoritmo voraz para MCLP.
+- **Task 1:** carga y limpieza de datos, reproyección (EPSG:3083), estadísticas por condado y cobertura con buffers de 10, 25 y 50 km.
+- **Task 2:** distancia al hospital más cercano, curva de cobertura acumulada, índice de vulnerabilidad por condado y selección de 3 nuevos hospitales con un algoritmo voraz para MCLP.
 
 ## Contenido
-- `lab5.ipynb`: notebook con todo el análisis, comentado.
-- `build_notebook.py`: script que genera el notebook.
+- `lab5.ipynb`: notebook con todo el análisis, ya ejecutado y comentado.
+- `figures/`: mapas y gráficas generados por el notebook.
 - `laboratorio_5.md`: enunciado.
 
 ## Cómo reproducirlo
 1. Instalar dependencias:
    ```
-   pip install geopandas pandas numpy matplotlib requests shapely rasterio scipy pyproj pyogrio matplotlib-scalebar python-dotenv jupyter
+   pip install geopandas pandas numpy matplotlib shapely scipy pyproj pyogrio matplotlib-scalebar jupyter
    ```
-2. Crear un archivo `.env` en la raíz con la llave de Healthsites (debe estar aprobada por sus administradores):
-   ```
-   HEALTHSITES_API_KEY=su_llave
-   ```
-3. Abrir `lab5.ipynb` y ejecutar todas las celdas. Los datos se descargan solos en `data/` y las figuras se guardan en `figures/`.
-
-> `.env` y `data/` están en `.gitignore` y no se suben al repositorio.
+2. Colocar los cuatro archivos de datos en la raíz del proyecto.
+3. Abrir `lab5.ipynb` y ejecutar todas las celdas. Las figuras se guardan en `figures/`.
